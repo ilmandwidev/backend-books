@@ -3,16 +3,22 @@ import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import booksRoute from "./routes/bookRoutes.js";
 import cors from "cors";
+import mustache from "mustache-express";
 
 const app = express();
 
+// SETUP
+app.engine("mustache", mustache());
+app.set("view engine", "mustache");
 // Middleware for parsing request body
 app.use(express.json());
 
 app.use(cors());
 
+app.use(express.static("public"));
+
 app.get("/", (request, response) => {
-  response.status(200).send("<h1>Home</h1>");
+  response.render("index");
 });
 app.use("/books", booksRoute);
 
